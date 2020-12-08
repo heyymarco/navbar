@@ -1,0 +1,266 @@
+// development:
+@use "node_modules/@heymarco/scss-utils/index" as *;
+@use "node_modules/@heymarco/colors/index" as *;
+
+// production:
+// @use "../../../node_modules/@heymarco/scss-utils/index" as *;
+// @use "../../../node_modules/@heymarco/colors/index" as *;
+
+
+
+$var-root           : ":root"               !default;
+$var-prefix         : "navbar-theme"        !default;
+$cssvar: "";
+@if (($var-prefix == null) or ($var-prefix == "")) {
+    $cssvar: "--";
+} @else {
+    $cssvar: "--#{$var-prefix}-";
+}
+
+$color              : unset                             !default;
+$background         : change-color($black, $alpha: 0.1) !default;
+$padding-x          : 1rem                              !default;
+$padding-y          : 1rem                              !default;
+$gap-x              : 0.5rem                            !default;
+$gap-y              : 0.5rem                            !default;
+
+$toggler-color      : unset                             !default;
+$toggler-background : change-color($black, $alpha: 0.1) !default;
+$toggler-bold       : 4px                               !default;
+$toggler-width      : 24px                              !default;
+$toggler-height     : 24px                              !default;
+
+$link-color         : unset                             !default;
+$link-background    : change-color($black, $alpha: 0.1) !default;
+$link-bold          : 4px                               !default;
+$link-padding-x     : 0.75rem                           !default;
+$link-padding-y     : 0.75rem                           !default;
+
+// set how fast the expanding animation:
+$expand-delay       : 0ms                               !default;
+$expand-duration    : 300ms                             !default;
+
+// set how fast the collapsing animation:
+$collapse-delay     : 0ms                               !default;
+$collapse-duration  : 300ms                             !default;
+
+
+
+@mixin cssvar {
+    #{$cssvar}color                 : #{$color};
+    #{$cssvar}background            : #{$background};
+    #{$cssvar}padding-x             : #{$padding-x};
+    #{$cssvar}padding-y             : #{$padding-y};
+    #{$cssvar}gap-x                 : #{$gap-x};
+    #{$cssvar}gap-y                 : #{$gap-y};
+
+    #{$cssvar}toggler-color         : #{$toggler-color};
+    #{$cssvar}toggler-background    : #{$toggler-background};
+    #{$cssvar}toggler-bold          : #{$toggler-bold};
+    #{$cssvar}toggler-width         : #{$toggler-width};
+    #{$cssvar}toggler-height        : #{$toggler-height};
+
+    #{$cssvar}link-color            : #{$link-color};
+    #{$cssvar}link-background       : #{$link-background};
+    #{$cssvar}link-padding-x        : #{$link-padding-x};
+    #{$cssvar}link-padding-y        : #{$link-padding-y};
+
+    #{$cssvar}expand-delay          : #{$expand-delay};
+    #{$cssvar}expand-duration       : #{$expand-duration};
+    
+    #{$cssvar}collapse-delay        : #{$collapse-delay};
+    #{$cssvar}collapse-duration     : #{$collapse-duration};
+}
+@if ($var-root) {
+    #{$var-root} { @include cssvar; }
+}
+
+
+
+/// a default theme definition.
+@mixin default {
+    color: var(#{$cssvar}color);
+    background: var(#{$cssvar}background);
+    padding-left: var(#{$cssvar}padding-x);
+    padding-right: var(#{$cssvar}padding-x);
+    padding-top: var(#{$cssvar}padding-y);
+    padding-bottom: var(#{$cssvar}padding-y);
+    column-gap: var(#{$cssvar}gap-x);
+    row-gap: var(#{$cssvar}gap-y);
+
+    transition: all 
+}
+
+
+/// a sticky theme definition.
+@mixin sticky {
+}
+
+
+/// a theme definition on desktop mode.
+@mixin desktop {
+    
+}
+
+
+/// a theme definition on phone mode.
+@mixin phone {
+}
+
+/// an theme definition when expanded.
+@mixin expand {
+
+}
+
+/// an theme definition when collapsed.
+@mixin collapse {
+    
+}
+
+
+/// an theme definition for the navbar's logo.
+@mixin logo {
+
+}
+
+/// an theme definition for the navbar's logo when expanded.
+@mixin logo-expand {
+
+}
+
+/// an theme definition for the navbar's logo when collapsed.
+@mixin logo-collapse {
+
+}
+
+
+/// an theme definition for the navbar's toggler.
+@mixin toggler {
+    &:hover, &:active {
+        color: var(#{$cssvar}toggler-color);
+        background: var(#{$cssvar}toggler-background);
+    }
+    
+    > svg > * {
+        stroke-width: var(#{$cssvar}toggler-bold);
+    }
+
+    width: var(#{$cssvar}toggler-width);
+    height: var(#{$cssvar}toggler-height);
+}
+
+/// an theme definition for the navbar's toggler when expanded.
+@mixin toggler-expand {
+    // transform hamburger menu to cross menu
+    > svg > * {
+        stroke-linecap: round;
+
+        transform-origin: 50% 50%;
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+        animation-delay: var(#{$cssvar}expand-delay);
+        animation-duration: var(#{$cssvar}expand-duration);
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: both;
+        &:nth-child(1) {
+            animation-name: #{$var-prefix}-close-top;
+            @keyframes #{$var-prefix}-close-top {
+                0% { transform: rotate(0deg) scaleX(1) translate(0, 0); }
+                43% { transform: rotate(-45deg) scaleX(1.35) translate(0, 37.5%); }
+                71% { transform: rotate(-75deg) scaleX(1.35) translate(0, 37.5%); }
+                100% { transform: rotate(-45deg) scaleX(1.35) translate(0, 37.5%); }
+            }
+        }
+        &:nth-child(2) {
+            animation-name: #{$var-prefix}-close-ctr;
+            @keyframes #{$var-prefix}-close-ctr {
+                0% { transform: scaleX(1); }
+                19% { transform: scaleX(1.3); }
+                100% { transform: scaleX(0); }
+            }
+        }
+        &:nth-child(3) {
+            animation-name: #{$var-prefix}-close-btm;
+            @keyframes #{$var-prefix}-close-btm {
+                0% { transform: rotate(0deg) scaleX(1) translate(0, 0); }
+                43% { transform: rotate(45deg) scaleX(1.35) translate(0, -37.5%); }
+                71% { transform: rotate(75deg) scaleX(1.35) translate(0, -37.5%); }
+                100% { transform: rotate(45deg) scaleX(1.35) translate(0, -37.5%); }
+            }
+        }
+    }
+}
+
+/// an theme definition for the navbar's toggler when collapsed.
+@mixin toggler-collapse {
+    > svg > * {
+        transform-origin: 50% 50%;
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+        animation-delay: var(#{$cssvar}collapse-delay);
+        animation-duration: var(#{$cssvar}collapse-duration);
+        animation-timing-function: ease-in-out;
+        animation-fill-mode: both;
+        &:nth-child(1) {
+            animation-name: #{$var-prefix}-hamb-top;
+            @keyframes #{$var-prefix}-hamb-top {
+                0% { transform: rotate(-45deg) scaleX(1.35) translate(0, 37.5%); }
+                43% { transform: rotate(0deg) scaleX(1) translate(0, 0); }
+                71% { 
+                    transform-origin: 91.7% 12.5%;
+                    transform: rotate(30deg) scaleX(1) translate(0, 0); }
+                100% { transform: rotate(0deg) scaleX(1) translate(0, 0); }
+            }
+        }
+        &:nth-child(2) {
+            animation-name: #{$var-prefix}-hamb-ctr;
+            @keyframes #{$var-prefix}-hamb-ctr {
+                0% { transform: scaleX(0); }
+                81% { transform: scaleX(1.3); }
+                100% { transform: scaleX(1); }
+            }
+        }
+        &:nth-child(3) {
+            animation-name: #{$var-prefix}-hamb-btm;
+            @keyframes #{$var-prefix}-hamb-btm {
+                0% { transform: rotate(45deg) scaleX(1.35) translate(0, -37.5%); }
+                43% { transform: rotate(0deg) scaleX(1) translate(0, 0); }
+                71% {
+                    transform-origin: 91.7% 87.5%;
+                    transform: rotate(-30deg) scaleX(1) translate(0, 0); }
+                100% { transform: rotate(0deg) scaleX(1) translate(0, 0); }
+            }
+        }
+    }
+}
+
+
+
+/// an theme definition for the navbar's link group.
+@mixin links {
+    
+}
+
+/// an theme definition for the navbar's link group when expanded.
+@mixin links-expand {
+
+}
+
+/// an theme definition for the navbar's link group when collapsed.
+@mixin links-collapse {
+
+}
+
+
+
+/// an theme definition for the navbar's individual link.
+@mixin link {
+    &:hover, &:active {
+        color: var(#{$cssvar}link-color);
+        background: var(#{$cssvar}link-background);
+    }
+    padding-left: var(#{$cssvar}link-padding-x);
+    padding-right: var(#{$cssvar}link-padding-x);
+    padding-top: var(#{$cssvar}link-padding-y);
+    padding-bottom: var(#{$cssvar}link-padding-y);
+}

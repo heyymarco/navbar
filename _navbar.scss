@@ -1,0 +1,251 @@
+$class              : ".navbar"     !default;
+$var-root           : ":root"       !default;
+$var-prefix         : "navbar"      !default;
+$cssvar: "";
+@if (($var-prefix == null) or ($var-prefix == "")) {
+    $cssvar: "--";
+} @else {
+    $cssvar: "--#{$var-prefix}-";
+}
+
+$grid-area          : navbar-start / navbar-start / body-end / body-end !default;
+$breakpoint         : $breakpoint-tablet    !default;
+$zindex             : 1020                  !default; //TODO: add z-index component
+
+
+
+@mixin cssvar {
+    #{$cssvar}grid-area         : #{$grid-area};
+ // #{$cssvar}breakpoint        : #{$breakpoint}; // @media query not support cssvar
+    #{$cssvar}zindex            : #{$zindex};
+}
+@if ($var-root) {
+    #{$var-root} { @include cssvar; }
+}
+
+
+
+/* begin: mixins & functions */
+/// apply the style when the browser's screen width below the $breakpoint
+@mixin navbar-phone {
+    @include media-breakpoint-less-than($breakpoint) {
+        @content;
+    }
+}
+
+/// apply the style when the browser's screen width above the $breakpoint
+@mixin navbar-desktop {
+    @include media-breakpoint-up($breakpoint) {
+        @content;
+    }
+}
+/* end: mixins & functions */
+
+
+
+/// A responsive navigation header. Customizable via css variables.
+@mixin navbar {
+    grid-area: var(#{$cssvar}grid-area);
+
+    // sticky-able
+    position: sticky;
+    top: 0px;
+    z-index: var(#{$cssvar}zindex);
+
+    // structure-flex properties:
+    display: flex;
+    flex-direction: row; // horizontal placement (desktop & mobile version)
+    flex-wrap: wrap; // allows long links takes next row if the remaining space is not enough (desktop & mobile version)
+    justify-content: space-between; // align the links & toggler (desktop & mobile version)
+    align-items: center; // reserve the original items' height (logo's height, toggler's height, links' height, etc) (desktop & mobile version)
+    
+
+    // apply custom styling:
+    @include theme.default;
+
+    &.sticky { @include theme.sticky; }
+
+    @include navbar-desktop { @include theme.desktop; }
+
+    @include navbar-phone { // .expand & .collapse only available on phone mode
+        @include theme.phone;
+
+        &.expand {
+            @include theme.expand;
+        }
+
+        &.collapse {
+            @include theme.collapse;
+        }
+    }
+
+
+    
+    // set ui center text
+    .logo,
+    .toggler,
+    :not(ul):not(ol).links > *,
+    ul.links > li > *,
+    ol.links > li > * {
+        display: flex;
+        justify-content: center; // center horizontally
+        align-items: center; // center vercitally
+    }
+
+    // strip out browser's default link style
+    a.logo,
+    a.toggler,
+    :not(ul):not(ol).links > a,
+    ul.links > li > a,
+    ol.links > li > a  {
+        @include strip-out-link;
+        cursor: pointer;
+    }
+
+    // strip out browser's default list style
+    ul.links, ol.links {
+        @include strip-out-list;
+    }
+
+    
+
+    // strip out browser's default ui style
+    input.toggler {
+        @include strip-out-control;
+    }
+
+    // supports for dropdown-menu
+    .toggler .dropdown-menu {
+        position: static;
+        @include navbar-desktop {
+            position: absolute;
+        }
+        float: none;
+    }
+
+
+
+    .logo {
+        // structures:
+        flex: 0 1 auto; // set width to flexible, starting from the required width | cannot grow up | can shrink down (if too big)
+        width: auto; // set the required width, keeps aspect ratio
+        align-self: stretch; // set height to parent (.navbar)
+        z-index: 2; // always on top
+
+
+
+        @include theme.logo;
+    }
+    @include navbar-phone { // .expand & .collapse only available on phone mode
+        &.expand .logo {
+            @include theme.logo-expand;
+        }
+
+        &.collapse .logo {
+            @include theme.logo-collapse;
+        }
+    }
+
+
+
+    .toggler {
+        @include navbar-desktop { display: none; } // no toggler on desktop
+
+        // structures:
+        flex: 0 1 auto; // set width to flexible, starting from the required width | cannot grow up | can shrink down (if too big)
+        width: rems(24/*px*/); // set the required width
+        // align-self: center; // set height as the required height, center vertically
+        height: rems(24/*px*/); // set the required height
+        z-index: 2; // always on top
+
+        // appearances:
+        cursor: pointer;
+
+        
+
+        > input { display: none; } // hide the checkbox (if the toggler is <label><input type=check></label>)
+
+        > svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible; // allow the svg animation to be oversized
+            
+            > * {
+                stroke: currentColor;
+                stroke-width: 4;
+                stroke-linecap: square;
+            }
+        }
+
+
+
+        @include theme.toggler;
+    }
+    @include navbar-phone { // .expand & .collapse only available on phone mode
+        &.expand .toggler {
+            @include theme.toggler-expand;
+        }
+
+        &.collapse .toggler {
+            @include theme.toggler-collapse;
+        }
+    }
+
+
+
+    %links-flex-properties {
+        display: flex;
+        flex-direction: column; // link1...linkN arranged down (mobile version)
+        flex-wrap: wrap; // allows link1...linkN to be placed on next column / next row
+        justify-content: start; // link1...linkN stick on top (mobile version) or stick on left (desktop version)
+        align-items: stretch; // set link1...linkN's width maximum (mobile version) -or- height maximum (desktop version)
+        @include navbar-desktop {
+            flex-direction: row; // link1...linkN arranged right (desktop version)
+        }
+    }
+    @include navbar-phone { &:not(.expand) .links { display: none; } } // default hidden on phone
+    .links {
+
+        // structures:
+        flex: 1 1 100%; // set width to maximum | can grow up | can shrink down (if too big)
+        // align-self: center; // set height as the required height, center vertically
+        @include navbar-desktop {
+            flex: 0 1 auto; // set width to flexible, starting from the required width | cannot grow up | can shrink down (if too big)
+            align-self: stretch; // set height to parent (.navbar)
+        }
+        z-index: 1; // always on top but below the logo & toggler
+
+        // structure-flex properties:
+        @extend %links-flex-properties;
+
+
+
+        @include theme.links;
+    }
+    @include navbar-phone { // .expand & .collapse only available on phone mode
+        &.expand .links {
+            @include theme.links-expand;
+        }
+
+        &.collapse .links {
+            @include theme.links-collapse;
+        }
+    }
+
+
+
+    // formatting li, the wrapper: li > a
+    ul.links, ol.links { > li {
+        @extend %links-flex-properties;
+    }}
+
+    // formatting the link item: a
+    :not(ul):not(ol).links > *,
+    ul.links > li > a,
+    ol.links > li > a {
+        @include theme.link;
+    }
+}
+@if ($class) {
+    #{$class} { @include navbar; }
+}

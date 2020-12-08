@@ -1,0 +1,403 @@
+/* begin: merge the required bootstrap compoentnets */
+/* end: merge the required bootstrap compoentnets */
+/* begin: re-export variables */
+/* end: re-export variables */
+/* begin: add transparent version of $colors */
+/* end: add transparent version of $colors */
+/* begin: add transparent version of $theme-colors */
+/* end: add transparent version of $theme-colors */
+:root {
+  --blue:#007bff;
+  --indigo:#6610f2;
+  --purple:#6f42c1;
+  --pink:#e83e8c;
+  --red:#dc3545;
+  --orange:#fd7e14;
+  --yellow:#ffc107;
+  --green:#28a745;
+  --teal:#20c997;
+  --cyan:#17a2b8;
+  --white:#fff;
+  --gray:#6c757d;
+  --gray-dark:#343a40;
+  --black:#000;
+  --blue-transp:rgba(0, 123, 255, 0.25);
+  --indigo-transp:rgba(102, 16, 242, 0.25);
+  --purple-transp:rgba(111, 66, 193, 0.25);
+  --pink-transp:rgba(232, 62, 140, 0.25);
+  --red-transp:rgba(220, 53, 69, 0.25);
+  --orange-transp:rgba(253, 126, 20, 0.25);
+  --yellow-transp:rgba(255, 193, 7, 0.25);
+  --green-transp:rgba(40, 167, 69, 0.25);
+  --teal-transp:rgba(32, 201, 151, 0.25);
+  --cyan-transp:rgba(23, 162, 184, 0.25);
+  --white-transp:rgba(255, 255, 255, 0.25);
+  --gray-transp:rgba(108, 117, 125, 0.25);
+  --gray-dark-transp:rgba(52, 58, 64, 0.25);
+  --black-transp:rgba(0, 0, 0, 0.25);
+  --primary:#007bff;
+  --secondary:#6c757d;
+  --success:#28a745;
+  --info:#17a2b8;
+  --warning:#ffc107;
+  --danger:#dc3545;
+  --light:#f8f9fa;
+  --dark:#343a40;
+  --primary-transp:rgba(0, 123, 255, 0.25);
+  --secondary-transp:rgba(108, 117, 125, 0.25);
+  --success-transp:rgba(40, 167, 69, 0.25);
+  --info-transp:rgba(23, 162, 184, 0.25);
+  --warning-transp:rgba(255, 193, 7, 0.25);
+  --danger-transp:rgba(220, 53, 69, 0.25);
+  --light-transp:rgba(248, 249, 250, 0.25);
+  --dark-transp:rgba(52, 58, 64, 0.25);
+}
+
+.bg-blur-fross-light {
+  backdrop-filter: blur(1px);
+}
+
+.bg-blur-fross-glass {
+  backdrop-filter: blur(5px);
+}
+
+.bg-blur-fross-thick {
+  backdrop-filter: blur(5px) blur(5px) blur(5px) blur(5px);
+}
+
+:root {
+  --color:unset;
+  --background:rgba(0, 0, 0, 0.1);
+  --padding-x:1rem;
+  --padding-y:1rem;
+  --gap-x:0.5rem;
+  --gap-y:0.5rem;
+  --toggler-color:unset;
+  --toggler-background:rgba(0, 0, 0, 0.1);
+  --toggler-bold:4px;
+  --toggler-width:24px;
+  --toggler-height:24px;
+  --link-color:unset;
+  --link-background:rgba(0, 0, 0, 0.1);
+  --link-padding-x:0.75rem;
+  --link-padding-y:0.75rem;
+  --expand-delay:0ms;
+  --expand-duration:300ms;
+  --collapse-delay:0ms;
+  --collapse-duration:300ms;
+}
+
+/* begin: merge the required bootstrap components */
+/* end: merge the required bootstrap components */
+/* begin: merge the required BS breakpoints */
+/* end: merge the required BS breakpoints */
+/* begin: we merged small desktops & tablets as "tablet" */
+/* end: we merged small desktops & tablets as "tablet" */
+/* begin: we merged landscape phones & portrait phones as "phone" */
+/* begin: we merged landscape phones & portrait phones as "phone" */
+:root {
+  --navbar-grid-area:navbar-start/navbar-start/body-end/body-end;
+  --navbar-zindex:1020;
+}
+
+/* begin: mixins & functions */
+/* end: mixins & functions */
+.navbar {
+  grid-area: var(--navbar-grid-area);
+  position: sticky;
+  top: 0px;
+  z-index: var(--navbar-zindex);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color);
+  background: var(--background);
+  padding-left: var(--padding-x);
+  padding-right: var(--padding-x);
+  padding-top: var(--padding-y);
+  padding-bottom: var(--padding-y);
+  column-gap: var(--gap-x);
+  row-gap: var(--gap-y);
+  transition: all;
+}
+.navbar .logo,
+.navbar .toggler,
+.navbar :not(ul):not(ol).links > *,
+.navbar ul.links > li > *,
+.navbar ol.links > li > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navbar a.logo,
+.navbar a.toggler,
+.navbar :not(ul):not(ol).links > a,
+.navbar ul.links > li > a,
+.navbar ol.links > li > a {
+  color: unset;
+  text-decoration: unset;
+  cursor: unset;
+  cursor: pointer;
+}
+.navbar a.logo:active,
+.navbar a.toggler:active,
+.navbar :not(ul):not(ol).links > a:active,
+.navbar ul.links > li > a:active,
+.navbar ol.links > li > a:active {
+  color: unset;
+}
+.navbar a.logo:focus,
+.navbar a.toggler:focus,
+.navbar :not(ul):not(ol).links > a:focus,
+.navbar ul.links > li > a:focus,
+.navbar ol.links > li > a:focus {
+  outline: unset;
+  outline-offset: unset;
+}
+.navbar ul.links, .navbar ol.links {
+  list-style-type: none;
+  margin-block-start: unset;
+  margin-block-end: unset;
+  margin-inline-start: unset;
+  margin-inline-end: unset;
+  padding-inline-start: unset;
+}
+.navbar ul.links > li, .navbar ol.links > li {
+  display: inline;
+  text-align: unset;
+}
+.navbar input.toggler {
+  appearance: none;
+  text-rendering: unset;
+  color: unset;
+  letter-spacing: unset;
+  word-spacing: unset;
+  text-transform: unset;
+  text-indent: unset;
+  text-shadow: unset;
+  text-align: unset;
+  background-color: unset;
+  cursor: unset;
+  margin: unset;
+  font: unset;
+  padding: unset;
+  border: unset;
+  box-sizing: unset;
+}
+.navbar input.toggler:focus {
+  outline: unset;
+  outline-offset: unset;
+}
+.navbar .toggler .dropdown-menu {
+  position: static;
+  float: none;
+}
+@media (min-width: 768px) {
+  .navbar .toggler .dropdown-menu {
+    position: absolute;
+  }
+}
+.navbar .logo {
+  flex: 0 1 auto;
+  width: auto;
+  align-self: stretch;
+  z-index: 2;
+}
+.navbar .toggler {
+  flex: 0 1 auto;
+  width: rems(24);
+  height: rems(24);
+  z-index: 2;
+  cursor: pointer;
+  width: var(--toggler-width);
+  height: var(--toggler-height);
+}
+@media (min-width: 768px) {
+  .navbar .toggler {
+    display: none;
+  }
+}
+.navbar .toggler > input {
+  display: none;
+}
+.navbar .toggler > svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.navbar .toggler > svg > * {
+  stroke: currentColor;
+  stroke-width: 4;
+  stroke-linecap: square;
+}
+.navbar .toggler:hover, .navbar .toggler:active {
+  color: var(--toggler-color);
+  background: var(--toggler-background);
+}
+.navbar .toggler > svg > * {
+  stroke-width: var(--toggler-bold);
+}
+@media (max-width: 767.98px) {
+  .navbar.expand .toggler > svg > * {
+    stroke-linecap: round;
+    transform-origin: 50% 50%;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    animation-delay: var(--expand-delay);
+    animation-duration: var(--expand-duration);
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+  }
+  .navbar.expand .toggler > svg > *:nth-child(1) {
+    animation-name: -close-top;
+  }
+  @keyframes -close-top {
+    0% {
+      transform: rotate(0deg) scaleX(1) translate(0, 0);
+    }
+    43% {
+      transform: rotate(-45deg) scaleX(1.35) translate(0, 37.5%);
+    }
+    71% {
+      transform: rotate(-75deg) scaleX(1.35) translate(0, 37.5%);
+    }
+    100% {
+      transform: rotate(-45deg) scaleX(1.35) translate(0, 37.5%);
+    }
+  }
+  .navbar.expand .toggler > svg > *:nth-child(2) {
+    animation-name: -close-ctr;
+  }
+  @keyframes -close-ctr {
+    0% {
+      transform: scaleX(1);
+    }
+    19% {
+      transform: scaleX(1.3);
+    }
+    100% {
+      transform: scaleX(0);
+    }
+  }
+  .navbar.expand .toggler > svg > *:nth-child(3) {
+    animation-name: -close-btm;
+  }
+  @keyframes -close-btm {
+    0% {
+      transform: rotate(0deg) scaleX(1) translate(0, 0);
+    }
+    43% {
+      transform: rotate(45deg) scaleX(1.35) translate(0, -37.5%);
+    }
+    71% {
+      transform: rotate(75deg) scaleX(1.35) translate(0, -37.5%);
+    }
+    100% {
+      transform: rotate(45deg) scaleX(1.35) translate(0, -37.5%);
+    }
+  }
+  .navbar.collapse .toggler > svg > * {
+    transform-origin: 50% 50%;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    animation-delay: var(--collapse-delay);
+    animation-duration: var(--collapse-duration);
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+  }
+  .navbar.collapse .toggler > svg > *:nth-child(1) {
+    animation-name: -hamb-top;
+  }
+  @keyframes -hamb-top {
+    0% {
+      transform: rotate(-45deg) scaleX(1.35) translate(0, 37.5%);
+    }
+    43% {
+      transform: rotate(0deg) scaleX(1) translate(0, 0);
+    }
+    71% {
+      transform-origin: 91.7% 12.5%;
+      transform: rotate(30deg) scaleX(1) translate(0, 0);
+    }
+    100% {
+      transform: rotate(0deg) scaleX(1) translate(0, 0);
+    }
+  }
+  .navbar.collapse .toggler > svg > *:nth-child(2) {
+    animation-name: -hamb-ctr;
+  }
+  @keyframes -hamb-ctr {
+    0% {
+      transform: scaleX(0);
+    }
+    81% {
+      transform: scaleX(1.3);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+  .navbar.collapse .toggler > svg > *:nth-child(3) {
+    animation-name: -hamb-btm;
+  }
+  @keyframes -hamb-btm {
+    0% {
+      transform: rotate(45deg) scaleX(1.35) translate(0, -37.5%);
+    }
+    43% {
+      transform: rotate(0deg) scaleX(1) translate(0, 0);
+    }
+    71% {
+      transform-origin: 91.7% 87.5%;
+      transform: rotate(-30deg) scaleX(1) translate(0, 0);
+    }
+    100% {
+      transform: rotate(0deg) scaleX(1) translate(0, 0);
+    }
+  }
+}
+.navbar ul.links > li, .navbar ol.links > li, .navbar .links {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: stretch;
+}
+@media (min-width: 768px) {
+  .navbar ul.links > li, .navbar ol.links > li, .navbar .links {
+    flex-direction: row;
+  }
+}
+@media (max-width: 767.98px) {
+  .navbar:not(.expand) .links {
+    display: none;
+  }
+}
+.navbar .links {
+  flex: 1 1 100%;
+  z-index: 1;
+}
+@media (min-width: 768px) {
+  .navbar .links {
+    flex: 0 1 auto;
+    align-self: stretch;
+  }
+}
+.navbar :not(ul):not(ol).links > *,
+.navbar ul.links > li > a,
+.navbar ol.links > li > a {
+  padding-left: var(--link-padding-x);
+  padding-right: var(--link-padding-x);
+  padding-top: var(--link-padding-y);
+  padding-bottom: var(--link-padding-y);
+}
+.navbar :not(ul):not(ol).links > *:hover, .navbar :not(ul):not(ol).links > *:active,
+.navbar ul.links > li > a:hover,
+.navbar ul.links > li > a:active,
+.navbar ol.links > li > a:hover,
+.navbar ol.links > li > a:active {
+  color: var(--link-color);
+  background: var(--link-background);
+}

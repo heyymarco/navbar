@@ -1,0 +1,34 @@
+{
+  "name": "navbar",
+  "version": "1.0.0",
+  "description": "A responsive navigation header. Customizable via css variables.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heyymarco/navbar.git"
+  },
+  "keywords": [
+    "navbar",
+    "responsive",
+    "header",
+    "menu",
+    "custom"
+  ],
+  "author": "HeyMarco",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heyymarco/navbar/issues"
+  },
+  "homepage": "https://github.com/heyymarco/navbar#readme",
+  "dependencies": {
+    "@heymarco/colors": "^1.0.7",
+    "@heymarco/control": "^1.0.4",
+    "@heymarco/media-breakpoints": "^1.0.4",
+    "@heymarco/modal": "^1.0.4",
+    "@heymarco/scss-utils": "^1.0.3",
+    "@heymarco/strip-out": "^1.0.0"
+  }
+}

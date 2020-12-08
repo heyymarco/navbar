@@ -1,0 +1,10 @@
+@use "theme-simple" as theme;
+// @use "theme-empty" as theme;
+// with(
+//     // -- navbar's theme config here --
+// )
+
+@use "dependencies" as *;
+
+// -- navbar's config here --
+@import "navbar";
