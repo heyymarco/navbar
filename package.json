@@ -1,7 +1,7 @@
 {
-  "name": "navbar",
+  "name": "@heymarco/navbar",
   "version": "1.0.0",
-  "description": "A responsive navigation header. Customizable via css variables.",
+  "description": "A responsive navigation header. Fully customizable via css variables.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,11 +24,15 @@
   },
   "homepage": "https://github.com/heyymarco/navbar#readme",
   "dependencies": {
-    "@heymarco/colors": "^1.0.7",
+    "@heymarco/border": "^1.0.0",
+    "@heymarco/colors": "^1.0.8",
+    "@heymarco/container": "^1.0.10",
     "@heymarco/control": "^1.0.4",
     "@heymarco/media-breakpoints": "^1.0.4",
-    "@heymarco/modal": "^1.0.4",
     "@heymarco/scss-utils": "^1.0.3",
-    "@heymarco/strip-out": "^1.0.0"
-  }
+    "@heymarco/spacer": "^1.0.2",
+    "@heymarco/strip-out": "^1.0.0",
+    "@heymarco/typography": "^1.0.6"
+  },
+  "devDependencies": {}
 }

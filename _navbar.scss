@@ -12,12 +12,67 @@ $grid-area          : navbar-start / navbar-start / body-end / body-end !default
 $breakpoint         : $breakpoint-tablet    !default;
 $zindex             : 1020                  !default; //TODO: add z-index component
 
+//  ___________________________________
+// |   ______                 ______   |
+// |  |      |               |      |  |
+// |  | logo |     space     | togl |  |
+// |  |______|               |______|  |
+// |                                   |
+// |   _____________________________   |
+// |  |                             |  |
+// |  |-----------------------------|  |
+// |  |            menu             |  |
+// |  |-----------------------------|  |
+// |  |_____________________________|  |
+// |                ||                 |
+// |                ||                 |
+// |                \/                 |
+// |               grow                |
+// |___________________________________|
+$phone-gtc: max-content 1fr max-content     !default;
+$phone-gtr: max-content auto                !default;
+$phone-gta:
+    "\"logo space toggler\""
+    "\"menu  menu    menu\""                !default;
+
+//  ________________________________________
+// |   ______   _________________________   |
+// |  |      | |             |   |   |   |  |
+// |  | logo | |    grow <== |    menu   |  |
+// |  |______| |_____________|___|___|___|  |
+// |________________________________________|
+$desktop-gtc: max-content 1fr               !default;
+$desktop-gtr: auto                          !default;
+$desktop-gta: "\"logo menu\""               !default;
+
+
+
+$menu-phone-gaf    : row                    !default;
+$menu-phone-gax    : auto                   !default;
+
+$menu-desktop-gaf  : column                 !default;
+$menu-desktop-gax  : auto                   !default;
+
 
 
 @mixin cssvar {
-    #{$cssvar}grid-area         : #{$grid-area};
- // #{$cssvar}breakpoint        : #{$breakpoint}; // @media query not support cssvar
-    #{$cssvar}zindex            : #{$zindex};
+    #{$cssvar}grid-area             : #{$grid-area};
+ // #{$cssvar}breakpoint            : #{$breakpoint}; // @media query not support cssvar
+    #{$cssvar}zindex                : #{$zindex};
+
+    #{$cssvar}desktop-gtc           : #{$desktop-gtc};
+    #{$cssvar}desktop-gtr           : #{$desktop-gtr};
+    #{$cssvar}desktop-gta           : #{$desktop-gta};
+
+    #{$cssvar}phone-gtc             : #{$phone-gtc};
+    #{$cssvar}phone-gtr             : #{$phone-gtr};
+    #{$cssvar}phone-gta             : #{$phone-gta};
+
+    #{$cssvar}menu-phone-gaf        : #{$menu-phone-gaf};
+    #{$cssvar}menu-phone-gax        : #{$menu-phone-gax};
+
+    #{$cssvar}menu-desktop-gaf      : #{$menu-desktop-gaf};
+    #{$cssvar}menu-desktop-gax      : #{$menu-desktop-gax};
 }
 @if ($var-root) {
     #{$var-root} { @include cssvar; }
@@ -39,82 +94,40 @@ $zindex             : 1020                  !default; //TODO: add z-index compon
         @content;
     }
 }
-/* end: mixins & functions */
 
-
-
-/// A responsive navigation header. Customizable via css variables.
-@mixin navbar {
-    grid-area: var(#{$cssvar}grid-area);
-
-    // sticky-able
-    position: sticky;
-    top: 0px;
-    z-index: var(#{$cssvar}zindex);
-
-    // structure-flex properties:
-    display: flex;
-    flex-direction: row; // horizontal placement (desktop & mobile version)
-    flex-wrap: wrap; // allows long links takes next row if the remaining space is not enough (desktop & mobile version)
-    justify-content: space-between; // align the links & toggler (desktop & mobile version)
-    align-items: center; // reserve the original items' height (logo's height, toggler's height, links' height, etc) (desktop & mobile version)
-    
-
-    // apply custom styling:
-    @include theme.default;
-
-    &.sticky { @include theme.sticky; }
-
-    @include navbar-desktop { @include theme.desktop; }
-
-    @include navbar-phone { // .expand & .collapse only available on phone mode
-        @include theme.phone;
-
-        &.expand {
-            @include theme.expand;
-        }
-
-        &.collapse {
-            @include theme.collapse;
-        }
-    }
-
-
-    
-    // set ui center text
-    .logo,
-    .toggler,
-    :not(ul):not(ol).links > *,
-    ul.links > li > *,
-    ol.links > li > * {
-        display: flex;
-        justify-content: center; // center horizontally
-        align-items: center; // center vercitally
+@mixin navbar-style-default {
+    // set navbar's items: default center text
+    .logo,                              // navbar's logo
+    .toggler,                           // navbar's toggler
+    :not(ul):not(ol).menu > *,          // navbar's link inside .menu
+                  ul.menu > li > *,     // navbar's link inside ul>li
+                  ol.menu > li > * {    // navbar's link inside ol>li
+        display         : flex;         // use flexbox to archive formatting, the flex direction is not matter
+        align-items     : center;       // centers each link items vertically (flex's cross axis)
+        justify-content : center;       // centers link group horizontally (flex's main axis)
     }
 
     // strip out browser's default link style
-    a.logo,
-    a.toggler,
-    :not(ul):not(ol).links > a,
-    ul.links > li > a,
-    ol.links > li > a  {
-        @include strip-out-link;
-        cursor: pointer;
+    a.logo,                             // navbar's logo
+    a.toggler,                          // navbar's toggler
+    :not(ul):not(ol).menu > a,          // navbar's link inside .menu
+                  ul.menu > li > a,     // navbar's link inside ul>li
+                  ol.menu > li > a  {   // navbar's link inside ol>li
+        @include strip-out-link;        // strip out the browser's default link formatting
+        cursor: pointer;                // bring back hand cursor
     }
 
     // strip out browser's default list style
-    ul.links, ol.links {
+    ul.menu, ol.menu {
         @include strip-out-list;
     }
-
-    
 
     // strip out browser's default ui style
     input.toggler {
         @include strip-out-control;
     }
 
-    // supports for dropdown-menu
+    // supports for bootstrap's dropdown-menu
     .toggler .dropdown-menu {
         position: static;
         @include navbar-desktop {
@@ -122,19 +135,69 @@ $zindex             : 1020                  !default; //TODO: add z-index compon
         }
         float: none;
     }
+}
+/* end: mixins & functions */
 
 
 
+/// A responsive navigation header. Customizable via css variables.
+@mixin navbar {
+    // grid item structures:
+    grid-area: var(#{$cssvar}grid-area);
+
+
+    // sticky-able navbar:
+    position: sticky;
+    top: 0px;
+    z-index: var(#{$cssvar}zindex);
+
+
+    // structure: grid properties:
+    display                     : grid;
+    grid-template-columns       : var(#{$cssvar}phone-gtc);
+    grid-template-rows          : var(#{$cssvar}phone-gtr);
+    grid-template-areas         : var(#{$cssvar}phone-gta);
+    @include navbar-desktop {
+        grid-template-columns   : var(#{$cssvar}desktop-gtc);
+        grid-template-rows      : var(#{$cssvar}desktop-gtr);
+        grid-template-areas     : var(#{$cssvar}desktop-gta);
+    }
+    justify-items               : center; // default not streetching each navbar's items vertically (grid's x axis)
+    align-items                 : center; // default not streetching each navbar's items horizontally (grid's y axis)
+    
+
+    @include navbar-style-default; // apply default styling
+    @include theme.default; // apply default custom styling
+
+    &.sticky { @include theme.sticky; } // apply sticky custom styling
+
+    @include navbar-phone { // .expand & .collapse only available on phone mode
+        @include theme.phone; // apply phone-version custom styling
+
+        &.expand {
+            @include theme.phone-expand; // apply phone-expand-version custom styling
+        }
+
+        &.collapse {
+            @include theme.phone-collapse; // apply phone-collapse-version custom styling
+        }
+    }
+
+    @include navbar-desktop { @include theme.desktop; } // apply desktop-version custom styling
+
+
+    
     .logo {
+        // grid item structures:
+        grid-area: logo;
+        align-self: stretch; // stretch the logo height covering whole navbar height
+
+
         // structures:
-        flex: 0 1 auto; // set width to flexible, starting from the required width | cannot grow up | can shrink down (if too big)
         width: auto; // set the required width, keeps aspect ratio
-        align-self: stretch; // set height to parent (.navbar)
-        z-index: 2; // always on top
 
 
-
-        @include theme.logo;
+        @include theme.logo; // apply custom styling
     }
     @include navbar-phone { // .expand & .collapse only available on phone mode
         &.expand .logo {
@@ -151,35 +214,39 @@ $zindex             : 1020                  !default; //TODO: add z-index compon
     .toggler {
         @include navbar-desktop { display: none; } // no toggler on desktop
 
-        // structures:
-        flex: 0 1 auto; // set width to flexible, starting from the required width | cannot grow up | can shrink down (if too big)
-        width: rems(24/*px*/); // set the required width
-        // align-self: center; // set height as the required height, center vertically
-        height: rems(24/*px*/); // set the required height
-        z-index: 2; // always on top
 
+        // grid item structures:
+        grid-area: toggler;
+
+
+        // structures:
+        width   : rems(24/*px*/); // set the required width
+        height  : rems(24/*px*/); // set the required height
+
+        
         // appearances:
         cursor: pointer;
 
         
-
-        > input { display: none; } // hide the checkbox (if the toggler is <label><input type=check></label>)
-
-        > svg {
-            width: 100%;
-            height: 100%;
-            overflow: visible; // allow the svg animation to be oversized
-            
-            > * {
-                stroke: currentColor;
-                stroke-width: 4;
-                stroke-linecap: square;
+        // children:
+        > {
+            input { display: none; } // hide the checkbox (if the toggler is <label><input type=check></label>)
+    
+            svg {
+                width: 100%;    // set width as parent's width
+                height: 100%;   // set height as parent's height
+                overflow: visible; // allow the svg animation to be overflow
+                
+                > * {
+                    stroke          : currentColor; // set menu color as parent's font color
+                    stroke-width    : 4;            // set menu thickness, 4 of 24 might enough
+                    stroke-linecap  : square;       // set menu edges square
+                }
             }
         }
 
 
-
-        @include theme.toggler;
+        @include theme.toggler; // apply custom styling
     }
     @include navbar-phone { // .expand & .collapse only available on phone mode
         &.expand .toggler {
@@ -193,57 +260,65 @@ $zindex             : 1020                  !default; //TODO: add z-index compon
 
 
 
-    %links-flex-properties {
-        display: flex;
-        flex-direction: column; // link1...linkN arranged down (mobile version)
-        flex-wrap: wrap; // allows link1...linkN to be placed on next column / next row
-        justify-content: start; // link1...linkN stick on top (mobile version) or stick on left (desktop version)
-        align-items: stretch; // set link1...linkN's width maximum (mobile version) -or- height maximum (desktop version)
+    @include navbar-phone { &:not(.expand) .menu { display: none; } } // default hidden on phone
+    .menu {
+        // grid item structures:
+        grid-area       : menu;
+        justify-self    : stretch; // stretch the menu width covering whole navbar width
+        align-self      : stretch; // stretch the menu height covering whole navbar height
+
+
+        // structure: grid properties:
+        display                 : grid;
+        grid-auto-flow          : var(#{$cssvar}menu-phone-gaf);
+        grid-auto-columns       : var(#{$cssvar}menu-phone-gax);
+        grid-auto-rows          : var(#{$cssvar}menu-phone-gax);
+        justify-content         : stretch;  // stretch link group to navbar's width
+        align-content           : stretch;  // stretch link group to navbar's height
         @include navbar-desktop {
-            flex-direction: row; // link1...linkN arranged right (desktop version)
+            grid-auto-flow      : var(#{$cssvar}menu-desktop-gaf);
+            grid-auto-columns   : var(#{$cssvar}menu-desktop-gax);
+            grid-auto-rows      : var(#{$cssvar}menu-desktop-gax);
+            justify-content     : right;    // move link group toward right
         }
-    }
-    @include navbar-phone { &:not(.expand) .links { display: none; } } // default hidden on phone
-    .links {
-
-        // structures:
-        flex: 1 1 100%; // set width to maximum | can grow up | can shrink down (if too big)
-        // align-self: center; // set height as the required height, center vertically
-        @include navbar-desktop {
-            flex: 0 1 auto; // set width to flexible, starting from the required width | cannot grow up | can shrink down (if too big)
-            align-self: stretch; // set height to parent (.navbar)
-        }
-        z-index: 1; // always on top but below the logo & toggler
-
-        // structure-flex properties:
-        @extend %links-flex-properties;
 
 
-
-        @include theme.links;
+        @include theme.menu; // apply custom styling
     }
     @include navbar-phone { // .expand & .collapse only available on phone mode
-        &.expand .links {
-            @include theme.links-expand;
+        &.expand .menu {
+            @include theme.menu-expand;
         }
 
-        &.collapse .links {
-            @include theme.links-collapse;
+        &.collapse .menu {
+            @include theme.menu-collapse;
         }
     }
 
 
 
     // formatting li, the wrapper: li > a
-    ul.links, ol.links { > li {
-        @extend %links-flex-properties;
+    ul.menu, ol.menu { > li {
+        // structure: grid properties:
+        display                 : grid;
+        justify-items           : stretch; // default streetching each link items vertically (grid's x axis)
+        align-items             : stretch; // default streetching each link items horizontally (grid's y axis)
     }}
 
     // formatting the link item: a
-    :not(ul):not(ol).links > *,
-    ul.links > li > a,
-    ol.links > li > a {
+    :not(ul):not(ol).menu > *,
+    ul.menu > li > a,
+    ol.menu > li > a {
         @include theme.link;
+    }
+    @include navbar-phone { // .expand & .collapse only available on phone mode
+        &.expand .menu {
+            @include theme.link-expand;
+        }
+
+        &.collapse .menu {
+            @include theme.link-collapse;
+        }
     }
 }
 @if ($class) {

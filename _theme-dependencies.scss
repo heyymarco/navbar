@@ -1,0 +1,7 @@
+// development:
+// @forward "node_modules/@heymarco/scss-utils/index";
+// @forward "node_modules/@heymarco/colors/index" hide $class, $var-root, $var-prefix, $cssvar, cssvar;
+
+// production:
+@forward "../../../node_modules/@heymarco/scss-utils/index";
+@forward "../../../node_modules/@heymarco/colors/index" hide $class, $var-root, $var-prefix, $cssvar, cssvar;

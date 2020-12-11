@@ -1,0 +1,101 @@
+// A theme with hover animation on ui background.
+
+
+
+@forward "theme-anim"               hide
+                                    menu, menu-expand, menu-collapse // will be overriden on this module
+                                    ;
+@use "theme-anim" as *;
+
+
+
+// development:
+// @use "node_modules/@heymarco/typography/index" as typo;
+// @use "node_modules/@heymarco/colors/index" as col;
+// @use "node_modules/@heymarco/spacer/index" as spc;
+// @use "node_modules/@heymarco/border/index" as bd;
+
+// production:
+@use "../../../node_modules/@heymarco/typography/index" as typo;
+@use "../../../node_modules/@heymarco/colors/index" as col;
+@use "../../../node_modules/@heymarco/spacer/index" as spc;
+@use "../../../node_modules/@heymarco/border/index" as bd;
+
+
+
+$hover-background       : var(--highlight, var(#{col.$cssvar}primary-transp))   !default; // guess the page's highlight from css var --highlight and fallback to page's primary color
+
+$logo-padding-x         : var(#{spc.$cssvar}smaller)                            !default; // guess the page's spacing from css var --spacer-smaller and fallback to @heymarco/spacer.$smaller
+$logo-padding-y         : $logo-padding-x                                       !default;
+$logo-bd-radius         : var(#{col.$cssvar}bd-radius-default)                  !default;
+
+$toggler-padding-x      : var(#{spc.$cssvar}smaller)                            !default; // guess the page's spacing from css var --spacer-smaller and fallback to @heymarco/spacer.$smaller
+$toggler-padding-y      : $toggler-padding-x                                    !default;
+$toggler-bd-radius      : var(#{col.$cssvar}bd-radius-default)                  !default;
+
+$link-padding-x         : var(#{spc.$cssvar}normal)                             !default; // guess the page's spacing from css var --spacer-smaller and fallback to @heymarco/spacer.$smaller
+$link-padding-y         : $link-padding-x                                       !default;
+$link-bd-radius         : var(#{col.$cssvar}bd-radius-default)                  !default;
+
+@if ($var-root) { #{$var-root} {
+    #{$cssvar}hover-background      : #{$hover-background};
+
+    #{$cssvar}logo-padding-x        : #{$logo-padding-x};
+    #{$cssvar}logo-padding-y        : #{$logo-padding-y};
+    #{$cssvar}logo-bd-radius        : #{$logo-bd-radius};
+
+    #{$cssvar}toggler-padding-x     : #{$toggler-padding-x};
+    #{$cssvar}toggler-padding-y     : #{$toggler-padding-y};
+    #{$cssvar}toggler-bd-radius     : #{$toggler-bd-radius};
+
+    #{$cssvar}link-padding-x        : #{$link-padding-x};
+    #{$cssvar}link-padding-y        : #{$link-padding-y};
+    #{$cssvar}link-bd-radius        : #{$link-bd-radius};
+}}
+
+
+
+/// an theme definition for the navbar's logo.
+@mixin logo {
+    padding-left    : var(#{$cssvar}logo-padding-x);
+    padding-right   : var(#{$cssvar}logo-padding-x);
+    padding-top     : var(#{$cssvar}logo-padding-y);
+    padding-bottom  : var(#{$cssvar}logo-padding-y);
+    @include bd.radius-all(var(#{$cssvar}logo-bd-radius));
+
+    transition      : background var(#{$cssvar}collapse-duration) ease-out var(#{$cssvar}collapse-delay);
+    &:hover, &:active {
+        background  : var(#{$cssvar}hover-background);
+        transition  : background var(#{$cssvar}expand-duration) ease-out var(#{$cssvar}expand-delay);
+    }
+}
+
+/// an theme definition for the navbar's toggler.
+@mixin toggler {
+    padding-left    : var(#{$cssvar}toggler-padding-x);
+    padding-right   : var(#{$cssvar}toggler-padding-x);
+    padding-top     : var(#{$cssvar}toggler-padding-y);
+    padding-bottom  : var(#{$cssvar}toggler-padding-y);
+    @include bd.radius-all(var(#{$cssvar}toggler-bd-radius));
+
+    transition      : background var(#{$cssvar}collapse-duration) ease-out var(#{$cssvar}collapse-delay);
+    &:hover, &:active {
+        background  : var(#{$cssvar}hover-background);
+        transition  : background var(#{$cssvar}expand-duration) ease-out var(#{$cssvar}expand-delay);
+    }
+}
+
+/// an theme definition for the navbar's link.
+@mixin link {
+    padding-left    : var(#{$cssvar}link-padding-x);
+    padding-right   : var(#{$cssvar}link-padding-x);
+    padding-top     : var(#{$cssvar}link-padding-y);
+    padding-bottom  : var(#{$cssvar}link-padding-y);
+    @include bd.radius-all(var(#{$cssvar}link-bd-radius));
+
+    transition      : background var(#{$cssvar}collapse-duration) ease-out var(#{$cssvar}collapse-delay);
+    &:hover, &:active {
+        background  : var(#{$cssvar}hover-background);
+        transition  : background var(#{$cssvar}expand-duration) ease-out var(#{$cssvar}expand-delay);
+    }
+}

@@ -1,0 +1,81 @@
+// A theme with sliding menu animation.
+
+
+
+@forward "theme-anim"               hide
+                                    menu-expand, menu-collapse // will be overriden on this module
+                                    ;
+@use "theme-anim" as *;
+
+
+
+/// an theme definition when expanded.
+/*override*/ @mixin menu-expand {
+    transform-origin            : top;
+
+    animation-duration          : var(#{$cssvar}expand-duration);
+    animation-timing-function   : ease-in-out;
+    animation-delay             : var(#{$cssvar}expand-delay);
+    animation-iteration-count   : 1;
+    animation-fill-mode         : both;
+    animation-name              : #{$var-prefix}-slide-in;
+    @keyframes #{$var-prefix}-slide-in {
+        0% {
+            transform   : scaleY(0);
+            max-height  : 0;
+        }
+        70% {
+            transform   : scaleY(1.1);
+            max-height  : 100vh;
+        }
+        99% {
+            transform   : scaleY(1);
+            max-height  : 100vh;
+        }
+        100% {
+            transform   : unset;
+            max-height  : unset;
+        }
+    }
+}
+
+/// an theme definition when collapsed.
+/*override*/ @mixin menu-collapse {
+    display: grid !important; // prevent the hidden state, so we can show the hidding animation before completely hidden
+
+    transform-origin            : top;
+
+    animation-duration          : var(#{$cssvar}expand-duration);
+    animation-timing-function   : ease-in-out;
+    animation-delay             : var(#{$cssvar}expand-delay);
+    animation-iteration-count   : 1;
+    animation-fill-mode         : both;
+    animation-name              : #{$var-prefix}-slide-out;
+    @keyframes #{$var-prefix}-slide-out {
+        0% {
+            transform   : scaleY(1);
+            max-height  : 100vh;
+
+            visibility  : visible;
+        }
+        30% {
+            transform   : scaleY(1.1);
+            max-height  : 100vh;
+
+            visibility  : visible;
+        }
+        99% {
+            transform   : scaleY(0);
+            max-height  : 0;
+
+            visibility  : visible;
+        }
+        100% {
+            transform   : scaleY(0);
+            max-height  : 0;
+            
+            visibility  : hidden;
+            display     : none !important;
+        }
+    }
+}

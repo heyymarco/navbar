@@ -1,10 +1,18 @@
-@use "theme-simple" as theme;
-// @use "theme-empty" as theme;
+// @use "theme" as theme; // a default theme, no styling, no animation.
+
+// @use "theme-menu-slide" as theme; // a theme with sliding menu animation.
+
+// @use "theme-toggler-transform" as theme; // a theme with transforming toggler animation.
+
+// @use "theme-hover-bg" as theme; // a theme with hover animation on ui background.
+
+@use "theme-simple" as theme; // a theme with simple look & simple animations.
+
 // with(
 //     // -- navbar's theme config here --
 // )
 
-@use "dependencies" as *;
+@use "navbar-dependencies" as *;
 
 // -- navbar's config here --
 @import "navbar";

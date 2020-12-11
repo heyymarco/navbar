@@ -1,0 +1,25 @@
+// A base of animation theme.
+// Provides the basic of animation configurations such as duration, delay, timing function, etc.
+
+
+
+@forward "theme";
+@use "theme" as *;
+
+
+
+// set how fast the expanding animation:
+$expand-delay       : 0ms                   !default;
+$expand-duration    : 300ms                 !default;
+
+// set how fast the collapsing animation:
+$collapse-delay     : 0ms                   !default;
+$collapse-duration  : 300ms                 !default;
+
+@if ($var-root) { #{$var-root} {
+    #{$cssvar}expand-delay          : #{$expand-delay};
+    #{$cssvar}expand-duration       : #{$expand-duration};
+    
+    #{$cssvar}collapse-delay        : #{$collapse-delay};
+    #{$cssvar}collapse-duration     : #{$collapse-duration};
+}}

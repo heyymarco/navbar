@@ -1,7 +1,0 @@
-// development:
-@forward "node_modules/@heymarco/media-breakpoints/index";
-@forward "node_modules/@heymarco/strip-out/index" as strip-out-*;
-
-// production:
-// @forward "../../../node_modules/@heymarco/media-breakpoints/index";
-// @forward "../../../node_modules/@heymarco/strip-out/index";
