@@ -1,6 +1,6 @@
 {
   "name": "@heymarco/navbar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A responsive navigation header. Fully customizable via css variables.",
   "main": "index.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "@heymarco/colors": "^1.0.8",
     "@heymarco/container": "^1.0.10",
     "@heymarco/control": "^1.0.5",
-    "@heymarco/element-config": "^1.0.2",
+    "@heymarco/element-config": "^1.0.3",
     "@heymarco/media-breakpoints": "^1.0.4",
     "@heymarco/scss-utils": "^1.0.3",
     "@heymarco/spacer": "^1.0.2",
