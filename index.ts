@@ -1,9 +1,14 @@
 import Element from "@heymarco/element";
 import Control from "@heymarco/control";
+import ElementConfig from "@heymarco/element-config";
 
 
+
+/**
+ * A responsive navigation header. Fully customizable via css variables.
+ */
 export default class Navbar extends Control {
-    constructor(selector : Selector) {
+    constructor(selector : Selector = Navbar.config.class) {
         super(selector);
     }
 
@@ -49,48 +54,69 @@ export default class Navbar extends Control {
 
 
 
+    /**
+     * A function to be executed when the toggler's state changed.
+     */
     static togglerChangeHandler(event : MouseEvent) {
         const toggler = new Element(event.target as HTMLElement);
-        const navbar = new Navbar(toggler.parents(this.class).first());
+        const navbar = new Navbar(toggler.parents(Navbar.config.class).first());
         const expanded = toggler.is(":checked");
 
-        navbar.markExpand = expanded;
+        navbar.markExpand   = expanded;
         navbar.markCollapse = !expanded;
     }
 
-    static overlayClickHandler(event : MouseEvent) {
-        const overlay = new Element(event.target as HTMLElement);
-        const offset = overlay.offset()!;
+    /**
+     * A function to be executed when the navbar's menu or its children clicked.
+     */
+    static menuClickHandler(event : MouseEvent) {
+        const menu = new Element(event.target as HTMLElement);
+        const offset = menu.offset()!;
         const mouseX = event.pageX - offset.left;
         const mouseY = event.pageY - offset.top;
 
-        if ((mouseX < 0) || (mouseX > overlay[0].offsetWidth) && (mouseY < 0) || (mouseY > overlay[0].offsetHeight)) {
-            const navbar = overlay.parents(this.class).first();
-            new Navbar(navbar).expanded = false;
+        if ((mouseX < 0) || (mouseX > menu[0].offsetWidth) && (mouseY < 0) || (mouseY > menu[0].offsetHeight)) {
+            this.overlayClickHandler(event);
         }
     }
 
-    static navbarMinSet : boolean | null = null;
+    /**
+     * A function to be executed when the navbar's overlay clicked.
+     */
+    static overlayClickHandler(event : MouseEvent) {
+        const menuOverlay = new Element(event.target as HTMLElement);
+        const navbar = new Navbar(menuOverlay.parents(Navbar.config.class).first());
+
+        navbar.expanded = false;
+    }
+
+    static _navbarMinSet : boolean | null = null;
+    /**
+     * A function to be executed when the browser's window scrolled.
+     */
     static windowScrollHandler() {
         const position = Element.window.scrollTop()!;
         if (position >= 30) {
-            if (this.navbarMinSet !== true) {
-                this.navbarMinSet = true;
+            if (this._navbarMinSet !== true) {
+                this._navbarMinSet = true;
 
-                new Navbar(this.class).markSticky = true;
+                new Navbar().markSticky = true;
             }
         } else {
-            if (this.navbarMinSet !== false) {
-                this.navbarMinSet = false;
+            if (this._navbarMinSet !== false) {
+                this._navbarMinSet = false;
 
-                new Navbar(this.class).markSticky = false;
+                new Navbar().markSticky = false;
             }
         }
     }
 
+    /**
+     * A function to be executed when the browser's window resized.
+     */
     static windowResizeHandler() {
         new Navbar(
-            new Element(this.class) // find navbar element
+            new Element(Navbar.config.class) // find navbar element
             .filter(".collapse")    // with .collapse status
         )
         .markCollapse = false;      // reset .collapse to initial
@@ -98,59 +124,44 @@ export default class Navbar extends Control {
 
 
 
-    static _class = "";
-    static _varPrefix = "";
-    /**
-     * @returns default returning ".navbar"
-     */
-    static get class() : string {
-        return this._class;
-    }
-
-    static _togglerChangeHandler = (event: JQuery.ChangeEvent<HTMLElement, undefined, any, any>) => Navbar.togglerChangeHandler(event as unknown as MouseEvent);
-    static _overlayClickHandler = (event: JQuery.ClickEvent<HTMLElement, undefined, any, any>) => Navbar.overlayClickHandler(event as unknown as MouseEvent);
-    /**
-     * Customize the ".navbar" class name.
-     */
-    static set class(name : string) {
-        if (this._class == name) return; // if its already the same, nothing to do.
-
-        if (this._class != "") { // detach prev event (if has set)
+    static _togglerChangeHandler    = (event: JQuery.ChangeEvent<HTMLElement, undefined, any, any>) => Navbar.togglerChangeHandler(event as unknown as MouseEvent);
+    static _menuClickHandler        = (event: JQuery.ClickEvent<HTMLElement, undefined, any, any>)  => Navbar.menuClickHandler(event as unknown as MouseEvent);
+    static config = new ElementConfig(
+        /* className    = */ ".navbar",
+        /* varPrefix    = */ "navbar",
+        /* deconfigure  = */ () => {
             Element.document
-            .off("change", `${this.class} .toggler input[type=checkbox], ${this.class} input[type=checkbox].toggler`, this._togglerChangeHandler)
-            .off("click", `${this.class} .links`, this._overlayClickHandler)
+
+            // un-watch the click event of navbar's toggler in whole document.
+            .off("change", `${Navbar.config.class} .toggler input[type=checkbox], ${Navbar.config.class} input[type=checkbox].toggler`, Navbar._togglerChangeHandler)
+
+            // un-watch the click event of navbar's overlay in whole document.
+            .off("click", `${Navbar.config.class} .menu`, Navbar._menuClickHandler)
             ;
-        }
-
-
-        this._class = name;
-        this._varPrefix = (name || "").replace(".", "");
-        if (this._class != "") {
+        },
+        /* configure    = */ () => {
             Element.document
 
             // watch the click event of navbar's toggler in whole document.
-            // when the navbar's toggler is clicked, the navbar expand/collapse status toggled.
-            .on("change", `${this.class} .toggler input[type=checkbox], ${this.class} input[type=checkbox].toggler`, this._togglerChangeHandler)
+            // when the navbar's toggler is clicked, the navbar should be toggled expanded/collapsed.
+            .on("change", `${Navbar.config.class} .toggler input[type=checkbox], ${Navbar.config.class} input[type=checkbox].toggler`, Navbar._togglerChangeHandler)
 
             // watch the click event of navbar's overlay in whole document.
-            // when the navbar's overlay clicked, the navbar status sholud be collapsed.
-            .on("click", `${this.class} .links`, this._overlayClickHandler)
+            // when the navbar's overlay is clicked, the navbar should be collapsed.
+            .on("click", `${Navbar.config.class} .menu`, Navbar._menuClickHandler)
             ;
-        } // if
-    }
+        },
+        /* configFirst  = */ true // it's safe to apply the config immediately.
+    );
 
-    /**
-     * @returns default returning "navbar"
-     */
-    static get varPrefix() : string {
-        return this._varPrefix;
+    static startup() : void {
+        Element.window
+        // watch the scroll event of browser's window.
+        .on("scroll", () => Navbar.windowScrollHandler())
+
+        // watch the resize event of browser's window.
+        .on("resize", () => Navbar.windowResizeHandler())
+        ;
     }
 }
-
-// watch the scroll event of browser's window.
-Element.window
-.on("scroll", () => Navbar.windowScrollHandler())
-.on("resize", () => Navbar.windowResizeHandler())
-;
-
-Navbar.class = ".navbar";
+Element.startup(Navbar.startup);
